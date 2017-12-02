@@ -1,0 +1,98 @@
+\documentclass[letter, 10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[dvips]{graphicx}
+\usepackage{multicol,caption}
+\usepackage{url}
+\usepackage[top=3cm,bottom=3cm,left=2cm,right=2cm,footskip=1.5cm,headheight=1.5cm,headsep=.5cm,textheight=3cm]{geometry}
+\setlength{\columnsep}{0.5cm}
+
+\begin{document}
+
+\begin{multicols}{2}
+[
+\title{Estrategias de aprendizaje para la sintonización de parámetros}
+\author{Germán Marcelo Treimun Costa \\ \small{Universidad Técnica Federico Santa Maria} \\ \small{german.treimun@alumnos.usm.cl}}
+\date{\none}
+\maketitle
+]
+
+\begin{abstract}
+
+\textit{Keywords}: 
+\end{abstract}
+
+\section{Introducci\'on}
+El diseño de metaheurísticas es una herramienta bastante poderosa a la hora de resolver problemas de optimización duros, pero a la vez diseñar una metaheurísitca resulta ser un proceso de alta dificultad que consume mucho tiempo. Como lo ideal es obtener la mejor solución, se debe realizar una representación adecuada del problema, y  también se deben tomar en consideración los parámetros que están asociados a este, aquí mismo es donde entra lo que se conoce como sintonización de parámetros[cita]. En el campo de la optimización, la sintonización de parámetros se refiere a encontrar los mejores valores de los parámetros para así obtener la mejor solución, o una mejor a la que ya se tiene, al mismo tiempo la idea es que la sintonización no cueste más de lo que puede beneficiar, ya que es una tarea computacionalmente compleja.\\
+
+Hoy en día existen bastantes técnicas que realizan una buena sintonización de parámetros, como lo son ParamILS \cite{Hutter2007AutomaticAC}, Revac \cite{Nannen2007RelevanceEA}, F-Race \cite{Birattari2002ARA} y SPO \cite{BartzBeielstein2005SequentialPO}, los cuales necesitan correr el algoritmo varias veces, a la vez generando bastante información, ayudando así al diseñador a tener un mejor entendimiento del algoritmo y por lo mismo mejorándolo. Uno de los grandes contras de estos algoritmos es que son bastante sofisticados y los diseñadores menos experimentados pueden verse complicados  a la hora de sintonizar parámetros. Aquí es donde entra EVOCA, un algoritmo propuesto por Riff et Al. \cite{Riff2013ANA} el cual entrega a diseñadores poco experimentados soluciones de buena calidad  de manera simple, sin necesidad de un alto conocimiento de sintonización de parámetros.[AQUI PUEDE HABER MÁS]\\
+
+El objetivo de esta propuesta de memoria es aplicar metodologías de aprendizaje a EVOCA, para así poder entregar al diseñador de metaheurísticas información relevante, ya sea de los parámetros categóricos y/o numéricos, observar la interdependencia de estos y obtener mejores resultados a los cuales ya obtiene.
+%Lo anterior no lo entiendo
+Para ello en este trabajo es  importante entender como funciona EVOCA y realizar un estudio de la literatura respecto a lo que se ha hecho en el campo de la sintonización de parámetros.\\
+
+En este trabajo se presenta en la sección 2 los objetivos preliminares. Después, en la sección 3, se presenta la definición del problema y algunas razones que justifican el querer resolverlo. En la sección 4 se presentará una definición más formal de EVOCA y cómo funciona. Posteriormente en la sección 5, se presentará un estado del arte preliminar en donde se revisarán trabajos presentes en la literatura sobre algoritmos de sintonización de parámetros. La sección 6 entrega conclusiones preliminares sobre el trabajo actual.
+
+
+\section{Objetivos}
+
+\subsection{Objetivo General}
+Realizar un estudio de la literatura para evaluar y comparar distintos enfoques y algoritmos que sintonizan parámetros presentados por diversos autores con la meta de poder rescatar lo mejor de ellos y visualizar como aplicarlo junto a metodologías de aprendizaje a EVOCA.
+
+
+\subsection{Objetivos Específicos}
+Se tienen como objetivos específicos:
+\begin{itemize}
+    \item Realizar una recopilación y comparación de algoritmos de sintonización de parámetros propuestos en 	la literatura (los datos que piden de entrada, cuantas ejecuciones necesitan y la calidad de las soluciones).
+    \item Analizar cómo los algoritmos monitorean los parámetros de forma individual y la interdependencia existente entre varios de estos.
+    \item Entender cómo funciona EVOCA y cómo se pueden aplicar metodologías de aprendizaje al algoritmo.
+\end{itemize}	
+
+\section{Definici\'on del Problema}
+
+La sintonización de parámetros, también conocida como meta-optimización, es el uso de un método de optimización para sintonizar otro método de optimización. Data desde los años 70 cuando Mercer y Sampson \cite{MercerSampson72} intentaron encontrar la sintonización de parámetros óptima para un algoritmo genético. Aunque se trate de un área bastante específica, la cual puede ser considerada como una capa más arriba de las metaheurísticas, realizar avances en los algoritmos de sintonización de parámetros es muy importante, pues estos afectan a la solución, ya que cada problema y las instancias de estos tienen parámetros propios, ya sean numéricos, categóricos o condicionales. Los parámetros pueden estar interrelacionados o incluso pueden variar durante la ejecución, por lo cual encontrar los mejores valores resulta ser un proceso complejo computacionalmente y que toma bastante tiempo. \\
+
+Dado la importancia que tiene realizar una buena sintonización de parámetros, existen varios algoritmos propuestos por distintos autores, pero varios de estos a la vez requieren de un conocimiento en profundidad de la sintonización, y es aquí donde el diseñador de metaheurísticas puede verse un poco trabado. EVOCA busca de manera simple ayudar a los diseñadores que cuentan con poca experiencia en sintonización de parámetros, entregando buenas soluciones, que están casi al mismo nivel que algoritmos más sofisticados y de hecho en algunos casos son mejores que otros. EVOCA como muchos otros sintonizadores debe ejecutarse muchas veces para poder sintonizar. El objetivo final de esta propuesta de memoria es sacar provecho de todas las veces que se ejecutó el algoritmo para guiar el proceso de sintonización, es decir, obtener información del proceso, ya sea si un parámetro por más que pueda variar no afecta mucho a la solución, o si al cambiar el valor de otro parámetro el parámetro anterior si afecta más a la solución, es decir la interdependencia de estos mismos. El cómo se pueda realizar lo mencionado es a través de técnicas de aprendizaje, para así en cada iteración (ejecución) del algoritmo se pueda ir obteniendo la información relevante mencionada anteriormente.
+
+\section{Marco Teórico}
+
+\section{Estado del Arte}
+A continuación se presentan algunos trabajos presentes en la literatura junto con los enfoques seleccionados por ellos, y qué resultados se obtuvieron.\\
+
+En el año 2014 Montero et al. \cite{Montero2014ABG} presentaron un documento como guía para principiantes en los métodos de sintonización de parámetros, haciendo mención en los tipos de sintonización y además realizando un buen resumen de los métodos F-Race \cite{Birattari2002ARA}, Revac \cite{Nannen2007RelevanceEA}, ParamILS \cite{Hutter2007AutomaticAC} y SPO \cite{BartzBeielstein2005SequentialPO}, por lo cual en este documento se utilizará el trabajo hecho en \cite{Montero2014ABG} para describir y comparar los métodos recientemente mencionados:
+\begin{itemize}
+    \item \textbf{F-Race:} 
+    Este algoritmo presentado por Bitrattari et al.\cite{Birattari2002ARA} en el año 2002 consiste en un proceso iterativo, que en cada iteración evalúa un conjunto de configuraciones candidatas, en una nueva instancia del problema o una nueva semilla y luego se elimina del conjunto la configuración que muestre el peor rendimiento estadístico. F-Race utiliza \textit{Friedman two-way analysis of variance by ranks} para comparar el rendimiento entre el conjunto de configuraciones de parámetros candidatas. Este método define tres parámetros: la cantidad de ejecuciones sin eliminación $r$, el nivel de confianza de las pruebas de hipótesis $\alpha$ y el número máximo de ejecuciones del algoritmo sintonizado $budget$. F-Race comienza con un conjunto $C$ de configuración de parámetros. El algoritmo requiere la definición de un conjunto discreto de valores para cada parámetro a sintonizar. Luego el algoritmo realiza $r$ ejecuciones de cada parámetro en $C$ para recolectar información suficiente antes de realizar una eliminación, la información se almacena en un arreglo de costos de cada parámetro. Posteriormente F-Race selecciona de manera aleatoria una instancia para continuar con las comparaciones de rendimiento entre las configuraciones de parámetros candidatas en $C$. F-Race evalúa el algoritmo sintonizado en la instancia y agrega esta información al arreglo de costos de cada parámetro. El algoritmo realiza la prueba de Friedman y si se rechaza la hipótesis nula, se puede interpretar que al menos una configuración candidata tiende a mostrar un mejor rendimiento que al menos otra configuración.Se hacen comparaciones por pares entre las configuraciones de los parámetros en donde los que tienen un rendimiento estadísticamente inferior se eliminan del conjunto configuraciones candidatas. F-Race termina cuando queda solo una configuración candidata o cuando se alcanza el máximo de ejecuciones predefinidas. 
+    \item \textbf{Revac:} Este método es definido como una estimación del algoritmo de distribución[CITA 22 PAPER PROFE]. Revac funciona con una población la cual esta dada por una matriz con $M$ filas, en la cual cada fila es una configuración de parámetros y contiene $k$ elementos, correspondientes a los $k$ parámetros a sintonizar. Para cada parámetro Revac inicia la búsqueda con una distribución uniforme de los valores dentro de un rango dado. En cada paso, mediante el uso de operadores de transformación especialmente diseñados, se reduce el rango de valores mencionado para cada parámetro. Por otro lado si un parámetro es más relevante que otro se establece en base a la entropía de los parámetros, de manera que a más alta entropía, menos relevancia tiene y si tiene una entropía baja, el parámetro es más relevante. El algoritmo se inicia con una población aleatoria de $M$ configuraciones de parámetros, se evalúa cada configuración de parámetros considerando solo una semilla aleatoriamente, en cada iteración solo se crea una nueva configuración de parámetros y la configuración hija, se crea mediante un cruzamiento multi-parental y transformación de mutación. El cruzamiento multi-parental considera las mejores $N<M$ configuraciones de parámetros. El operador de mutación calcula para cada parámetro un intervalo de mutación, luego se selecciona un valor aleatorio del intervalo de mutación y se asigna la configuración de un hijo.
+    \item \textbf{ParamILS:}
+    \textit{Parameter Iterated Local Search method} como su nombre lo indica, funciona como un algoritmo de búsqueda local iterativo. Este algoritmo propuesto en 2007 por Hutter et al. \cite{Hutter2007AutomaticAC} comienza con una configuración de parámetros por defecto, usualmente basado en la experiencia de usuario, luego el algoritmo ejecuta $R$ intentos de búsqueda para una nueva configuración de parámetros de mejor calidad que la por defecto. En cada iteración el algoritmo ejecuta $s$ perturbaciones aleatorias en la configuración a mano, luego se ejecuta. \textit{IterativeFirstImprovement(c,N)} (método de búsqueda local que busca una mejor configuración aleatoria en el vecindario de configuración de parámetros) utilizando la mejor configuración obtenida y se compara con la mejor configuración de parámetros encontrada hasta ahora. El método cuenta con una probabilidad de reinicio, para que se pueda explorar y no solo realizar explotación.
+    \item \textbf{SPO:}
+    Consiste en un método que realiza iterativamente un análisis experimental de un conjunto de puntos de diseño (configuraciones de parámetros), luego estima el rendimiento de algoritmo para sintonizar mediante un modelo de proceso estocástico, y finalmente determina los nuevos puntos de diseño. el algoritmo parte con la construcción de un conjunto de puntos de diseño mediante un diseño de \textit{Latin Hipercube Sampling} (LHS) en el rango de valores definido para los parámetros. Los $n$ puntos de diseño se eligen aleatoriamente de $n$ intervalos, los cuales a su vez se obtienen dividiendo $n$ veces el rango de cada parámetro. 
+\end{itemize}
+
+Los autores realizaron experimentos con los 4 métodos descritos y compararon los resultados, obteniendo ventajas y desventajas de cada método respecto a la calidad de los resultados, el esfuerzo que requieren los métodos, la información entregada, la usabilidad, que tan amigables son con el usuario y el comportamiento bajo distintos escenarios. Se utilizo un algoritmo genético estándar para optimizar ocho funciones. [AQUI FALTA EXPERIMENTAL SETUP, RESULTADOS Y CONCLUSIONES]\\
+
+
+Un acercamiento anterior 
+blbalablalba\\
+
+En el año 2010, S.K Smith et al.\cite{Smit2010AnMM} propusieron un algoritmo de sintonización de parámetros multi-función, llamado M-FETA el cual esta basado en un algoritmo evolutivo multi-objetivo. Este algoritmo es capaz de aproximar la `frontera de pareto' de parámetros de forma efectiva. El interés de los autores son los valores de parámetros `robustos' que hacen que el AE (Algoritmo Evolutivo) que los utiliza sea más `generalista' que `especialista'. Los autores utilizaron vectores para las soluciones candidatas, y la calidad de estos depende del rendimiento de un AE en una colección de funciones $F=\{f_{1},...,f_{M}\}$. Al ser los AE estocásticos, se puede observar ruido en el rendimiento, y para mejorar la estimación de los parámetros, debería repetirse la medición con AE, pero esto es bastante costoso, por lo que los autores decidieron utilizar el concepto de vecindario. Para un vector $\bar{x}$ se tiene un vecindario $N_{\bar{x}}$ con $k$ individuos de menor distancia euclidiana a $\bar{x}$, esto es para validar el vector $\bar{x}$ mediante su vecindario. La idea es que si se tienen 2 vectores $\bar{x}$ e $\bar{y}$, se dice que el primero domina al otro si y solo si:
+\begin{itemize}
+    \item $\exists f \in F$ tal que el rendimiento del AE en $f$ basado en la data perteneciente a $N_{\bar{x}}$ es significativamente mejor que el rendimiento del AE en la data perteneciente a $N_{\bar{y}}$.
+    \item $\forall e \in F (g \neq f)$ el rendimiento del AE en g para vectores en $N_{\bar{y}}$ no es significativamente mejor que el rendimiento para vectores en $N_{\bar{x}}$.
+\end{itemize}
+Basado en el dominio, los autores pudieron hacer un \textit{rank} de los vectores de parámetros y realizar comparaciones entre estos. Se tiene que un vector $N_{\bar{x}}$ es mejor que un vector $N_{\bar{y}}$, cuando el \textit{rank} de $N_{\bar{x}}$ es menor al de $N_{\bar{y}}$, o cuando ambos tienen el mismo \textit{rank}, pero $N_{\bar{x}}$ esta más aislado que $N_{\bar{y}}$ (donde $\bar{x}$ es mas aislado que $\bar{y}$ si, esta más lejos de sus vecinos que $\bar{y}$). El sistema propuesto por los autores tiene dos propiedades importantes desde la perspectiva de muestrear nuevos vectores para ser probados. La primera propiedad trata de un sesgo inherente para preferir vectores aislados como padres en M-FETA. Este sesgo viene del hecho de que los vecinos de un cierto vector están bastante lejos, lo cual resulta en una desviación estándar grande y esto a su vez hace que el \textit{rank} disminuya, en consecuencia, la probabilidad de ser elegido para reproducción aumenta. La segunda propiedad es que el vector hijo probablemente esté cerca del padre, por lo cual disminuye la distancia en el vecindario y en consecuencia agudiza la estimación de su utilidad. Posteriormente todos los vectores de parámetros que no son dominados, conforman el conjunto de parámetros de \textit{pareto}, es decir, no hay otro vector que obtenga un rendimiento significativamente mejor en una de las funciones de prueba. Cada vector en el conjunto de \textit{pareto} puede ser visto como `robusto', pero todos ellos representan distintas compensaciones respecto al rendimiento. La opción a elegir en esta frontera está sujeta a las preferencias de cada usuario. Ejemplos de esto, es cuando se quiere que todos los objetivos tengan el mismo peso y se elige el vector que tiene mejor rendimiento, o cuando se elige el vector el que tiene mejor rendimiento en un problema, mientras mantiene un rendimiento mínimo dado en otro problema. La configuración experimental consiste en 3 capas de arquitectura, en la capa de aplicación se utilizaron dos funciones de prueba de 10 dimensiones, Sphere[CITA] y Rastrigin[CITA]. Para Rastrigin se permitieron 8000 evaluaciones y para Sphere 4000. En la capa del algoritmo se utilizó un algoritmo genético simple con \textit{N-point Crossover}, mutación de \textit{bitflip, K-tournamen} para la selección de los padres y selección de supervivencia selectiva. En la capa del diseño, M-FETA es usado para la sintonización de parámetros. [AQUI FALTAN RESULTADOS Y CONCLUSIONES]
+
+\section{Conclusiones}
+
+ 
+\section{Bibliograf\'ia}
+
+\bibliographystyle{plain}
+\bibliography{Referencias}
+
+\end{multicols}
+
+\end{document} 
